@@ -37,24 +37,27 @@ module.exports = {
       //   loader: 'source-map-loader',
       // },
       {
-        test: /\.css$/,
+        test: /\.(scss|css)$/,
         // include: path.resolve(__dirname, 'src'),
         use: [
           // { loader: 'style-loader' },
           { loader: MiniCssExtractPlugin.loader },
-          {
-            loader: 'css-modules-typescript-loader',
-          },
+          // {
+          //   loader: 'css-modules-typescript-loader',
+          // },
           {
             loader: 'css-loader',
-            options: {
-              modules: {
-                localIdentName: '[name]_[local]_[hash:base64:5]',
-              },
-              importLoaders: 2,
-              sourceMap: true,
-              // minimize: true,
-            },
+            // options: {
+            //   modules: {
+            //     localIdentName: '[name]_[local]_[hash:base64:5]',
+            //   },
+            //   importLoaders: 2,
+            //   sourceMap: true,
+            //   // minimize: true,
+            // },
+          },
+          {
+            loader: 'sass-loader',
           },
           {
             loader: 'postcss-loader',
@@ -67,25 +70,28 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   optimization: {
-    runtimeChunk: 'single',
+    // runtimeChunk: 'single',
     splitChunks: {
       chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-            return `npm.${packageName.replace('@', '')}`;
-          },
-        },
-      },
+      // maxInitialRequests: Infinity,
+      // minSize: 0,
+      // cacheGroups: {
+      //   vendor: {
+      //     test: /[\\/]node_modules[\\/]/,
+      //     name(module) {
+      //       const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+      //       return `npm.${packageName.replace('@', '')}`;
+      //     },
+      //   },
+      // },
     },
   },
   plugins: [
     new CleanWebpackPlugin({
       dry: false,
+      verbose: true,
+      root: __dirname,
+      cleanAfterEveryBuildPatterns: ['dist/main.*.js', 'dist/mainfest.*.js'],
     }),
     new ForkTsCheckerWebpackPlugin({ eslint: true }),
     new MiniCssExtractPlugin({
