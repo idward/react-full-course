@@ -42,7 +42,7 @@ module.exports = {
     //   },
     // ],
     'no-mixed-operators': [
-      1,
+      0,
       {
         allowSamePrecedence: true,
       },
@@ -75,6 +75,10 @@ module.exports = {
     'class-methods-use-this': 0,
     'lines-between-class-members': 0,
     'global-require': 0,
+    'consistent-return': 0,
+    'no-alert': 0,
+    'no-useless-return': 0,
+    'newline-before-return': 0,
     // "dot-notation": 0,
 
     'import/prefer-default-export': 0,
@@ -112,10 +116,7 @@ module.exports = {
     'react/jsx-indent': 0,
     'react/jsx-boolean-value': 0,
     'react/jsx-closing-tag-location': 0,
-    'react/jsx-closing-bracket-location': [
-      2,
-      { selfClosing: 'props-aligned', nonEmpty: 'after-props' },
-    ],
+    'react/jsx-closing-bracket-location': [0, { selfClosing: 'props-aligned', nonEmpty: 'after-props' }],
     'react/button-has-type': 0,
     'react/prop-types': 0,
     'react/button-has-type': 0,

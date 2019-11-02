@@ -6,6 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+const devMode = process.env.NODE_ENV !== 'production';
+
 module.exports = {
   mode: 'development',
   devtool: 'source-map',
@@ -41,7 +43,7 @@ module.exports = {
         // include: path.resolve(__dirname, 'src'),
         use: [
           // { loader: 'style-loader' },
-          { loader: MiniCssExtractPlugin.loader },
+          { loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader },
           // {
           //   loader: 'css-modules-typescript-loader',
           // },
@@ -63,6 +65,10 @@ module.exports = {
             loader: 'postcss-loader',
           },
         ],
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader',
       },
     ],
   },

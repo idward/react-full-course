@@ -1,21 +1,15 @@
 import React, { FC } from 'react';
 import './home.styles.scss';
+import Directory from '../../components/directory/Directory';
 
 interface IHomePageProps {
   [key: string]: any;
 }
 
-const HomePage: FC<IHomePageProps> = () => {
+const HomePage: FC<IHomePageProps> = (_props: any) => {
   return (
     <div className="homepage">
-      <div className="directory-menu">
-        <div className="menu-item">
-          <div className="content">
-            <h1 className="title">HATS</h1>
-            <span className="subtitle">SHOP NOW</span>
-          </div>
-        </div>
-      </div>
+      <Directory />
     </div>
   );
 };
