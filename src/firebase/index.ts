@@ -20,11 +20,11 @@ const fs = firebase.firestore();
 export const createUserProfileDocument = async (userAuth: any, aditionalDatas?: any) => {
   if (!userAuth) return;
 
-  console.log('userAuth: ', userAuth);
-
+  // console.log('userAuth: ', userAuth);
   const userRef = fs.doc(`/users/${userAuth.uid}`);
   const snapshot = await userRef.get();
 
+  // 如果用户不存在
   if (!snapshot.exists) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -37,6 +37,35 @@ export const createUserProfileDocument = async (userAuth: any, aditionalDatas?: 
   }
 
   return userRef;
+};
+
+export const getCollectionsAndDocuments = () => {
+  return fs.collection('collections');
+};
+
+export const getDataFromCollections = (snapshot:any) => {
+    return snapshot.docs.map((doc: any) => {
+      const { title, routeName, items } = doc.data();
+      return {
+        id: doc.id,
+        title,
+        routeName: encodeURI(routeName),
+        items,
+      };
+    });
+}
+
+export const addCollectionsAndDocuments = async (collectionName: string, datas: any) => {
+  const collectionRef = fs.collection(collectionName);
+  const batch = fs.batch();
+
+  datas.forEach((data: any) => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, data);
+  });
+  const result = await batch.commit();
+
+  return result;
 };
 
 export const auth = firebase.auth();

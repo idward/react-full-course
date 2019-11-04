@@ -1,17 +1,19 @@
 import { Reducer } from 'redux';
-import { ShoppingList } from 'src/types';
-import SHOP_DATA from '../../data';
+import { ShopAction } from '../actions/shop.action';
+import { ShoppingList, ShopEnum } from '../../types';
 
 export interface ShopState {
   collections: ShoppingList[];
 }
 
 const initialState: ShopState = {
-  collections: SHOP_DATA,
+  collections: [],
 };
 
-const shopReducer: Reducer<ShopState, any> = (state = initialState, action) => {
+const shopReducer: Reducer<ShopState, any> = (state = initialState, action: ShopAction) => {
   switch (action.type) {
+    case ShopEnum.ADD_COLLECTIONS:
+      return { ...state, collections: action.collections };
     default:
       return state;
   }

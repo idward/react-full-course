@@ -1,5 +1,5 @@
 export interface ShoppingList {
-  id: number;
+  id?: number;
   title: string;
   routeName: string;
   items: ShoppingItem[];
@@ -38,4 +38,8 @@ export enum CartEnum {
   REMOVE_CART_ITEM = 'REMOVE_CART_ITEM',
   INCREASE_CART_ITEM_QUANTITY = 'INCREASE_CART_ITEM_QUANTITY',
   DECREASE_CART_ITEM_QUANTITY = 'DECREASE_CART_ITEM_QUANTITY',
+}
+
+export enum ShopEnum {
+  ADD_COLLECTIONS = 'ADD_COLLECTIONS'
 }

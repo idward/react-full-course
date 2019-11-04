@@ -4,10 +4,11 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Unsubscribe } from 'firebase';
 import { auth, createUserProfileDocument } from './firebase';
-import { setCurrentUser } from './store/actions';
+import { setCurrentUser as setCurrentUserAction } from './store/actions';
 import { ApplicationState } from './store/reducers';
 import { selectCurrentUser } from './store/reducers/user.selectors';
 import { AuthUser } from './types';
+
 import HomePage from './pages/home/Home';
 import ShopPage from './pages/shop/Shop';
 import RegisterPage from './pages/register/Register';
@@ -15,33 +16,31 @@ import CheckoutPage from './pages/checkout/Checkout';
 import Header from './components/header/Header';
 import './app.styles.scss';
 
-interface AppState {
-  currentUser: AuthUser | null;
-}
-
-interface ComponentProps {
+interface AppComponentProps {
   [key: string]: any;
 }
 
-type IAppProps = ComponentProps & RouteComponentProps;
+type IAppProps = AppComponentProps & RouteComponentProps;
 
-class App extends React.Component<IAppProps, AppState> {
+class App extends React.Component<IAppProps, {}> {
   userAuthSubs: Unsubscribe | null = null;
+  userSnapshotSubs: Unsubscribe | null = null;
 
   /**
    * 获取用户权限(用户是否登录)
    */
   componentDidMount() {
+    const { setCurrentUser } = this.props;
     // console.log(this.props);
     this.userAuthSubs = auth.onAuthStateChanged(async (values: any) => {
       // 用户存在
       if (values) {
         const userRef = await createUserProfileDocument(values);
         if (userRef) {
-          userRef.onSnapshot(snapshot => {
+          this.userSnapshotSubs = userRef.onSnapshot(snapshot => {
             const { displayName, email, createdAt } = snapshot.data() as AuthUser;
 
-            this.props.setCurrentUser({
+            setCurrentUser({
               uid: snapshot.id,
               displayName,
               email,
@@ -50,7 +49,7 @@ class App extends React.Component<IAppProps, AppState> {
           });
         }
       } else {
-        this.props.setCurrentUser(null);
+        setCurrentUser(null);
       }
     });
   }
@@ -61,6 +60,9 @@ class App extends React.Component<IAppProps, AppState> {
   componentWillUnmount() {
     if (this.userAuthSubs) {
       this.userAuthSubs();
+    }
+    if (this.userSnapshotSubs) {
+      this.userSnapshotSubs();
     }
   }
 
@@ -96,7 +98,7 @@ const mapStateToProps = (state: ApplicationState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    setCurrentUser: (user: any) => dispatch(setCurrentUser(user)),
+    setCurrentUser: (user: any) => dispatch(setCurrentUserAction(user)),
   };
 };
 
