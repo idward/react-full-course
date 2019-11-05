@@ -1,21 +1,21 @@
-import { Action } from 'redux';
+import { AnyAction } from 'redux';
 import { CartEnum, ShoppingItem } from '../../types';
 
-export interface ToggleCartStatusAction extends Action {
+export interface ToggleCartStatusAction extends AnyAction {
   type: CartEnum;
 }
 
-export interface AddCartItemAction extends Action {
+export interface AddCartItemAction extends AnyAction {
   type: CartEnum;
   item?: ShoppingItem;
 }
 
-export interface RemoveCartItemAction extends Action {
+export interface RemoveCartItemAction extends AnyAction {
   type: CartEnum;
   removedItem?: ShoppingItem;
 }
 
-export interface CartItemQuantityAction extends Action {
+export interface CartItemQuantityAction extends AnyAction {
   type: CartEnum;
   updatedItem?: ShoppingItem;
 }
@@ -54,7 +54,7 @@ export const removeCartItem = (removedItem: ShoppingItem): CartAction => {
   };
 };
 
-export type CartAction = CartItemQuantityAction &
-  RemoveCartItemAction &
-  ToggleCartStatusAction &
+export type CartAction = CartItemQuantityAction |
+  RemoveCartItemAction |
+  ToggleCartStatusAction |
   AddCartItemAction;

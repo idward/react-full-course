@@ -1,13 +1,11 @@
 import { Reducer } from 'redux';
 import { CartEnum, ShoppingItem } from '../../types';
-import {
-  CartAction,
-} from '../actions/cart.action';
+import { CartAction } from '../actions/cart.action';
 import { addItemToCart } from '../../utils/cart/cart.util';
 
 export interface CartState {
   showStatus?: boolean;
-  cartItems?: ShoppingItem[];
+  cartItems: ShoppingItem[];
 }
 
 const initialState: CartState = {
@@ -15,7 +13,7 @@ const initialState: CartState = {
   cartItems: [],
 };
 
-const cartReducer: Reducer<CartState, CartAction> = (state = initialState, action) => {
+const cartReducer: Reducer<CartState, CartAction> = (state = initialState, action): CartState => {
   switch (action.type) {
     case CartEnum.TOGGLE_CART_STATUS:
       return {
@@ -30,39 +28,33 @@ const cartReducer: Reducer<CartState, CartAction> = (state = initialState, actio
     case CartEnum.REMOVE_CART_ITEM:
       return {
         ...state,
-        cartItems: state.cartItems
-          ? state.cartItems.filter((cartItem: ShoppingItem) => {
-              return action.removedItem ? cartItem.name !== action.removedItem.name : true;
-            })
-          : [],
+        cartItems: state.cartItems.filter((cartItem: ShoppingItem) => {
+          return action.removedItem ? cartItem.name !== action.removedItem.name : true;
+        }),
       };
     case CartEnum.INCREASE_CART_ITEM_QUANTITY:
       return {
         ...state,
-        cartItems: state.cartItems
-          ? state.cartItems.map((cartItem: ShoppingItem) => {
-              if (action.updatedItem && cartItem.name === action.updatedItem.name) {
-                cartItem.quantity += 1;
-              }
-              return cartItem;
-            })
-          : [],
+        cartItems: state.cartItems.map((cartItem: ShoppingItem) => {
+          if (action.updatedItem && cartItem.name === action.updatedItem.name) {
+            cartItem.quantity += 1;
+          }
+          return cartItem;
+        }),
       };
     case CartEnum.DECREASE_CART_ITEM_QUANTITY:
       return {
         ...state,
-        cartItems: state.cartItems
-          ? state.cartItems.map((cartItem: ShoppingItem) => {
-              if (action.updatedItem && cartItem.name === action.updatedItem.name) {
-                if (cartItem.quantity > 1) {
-                  cartItem.quantity -= 1;
-                } else {
-                  cartItem.quantity = 1;
-                }
-              }
-              return cartItem;
-            })
-          : [],
+        cartItems: state.cartItems.map((cartItem: ShoppingItem) => {
+          if (action.updatedItem && cartItem.name === action.updatedItem.name) {
+            if (cartItem.quantity > 1) {
+              cartItem.quantity -= 1;
+            } else {
+              cartItem.quantity = 1;
+            }
+          }
+          return cartItem;
+        }),
       };
     default:
       return state;

@@ -3,7 +3,7 @@ import { ShopAction } from '../actions/shop.action';
 import { ShoppingList, ShopEnum } from '../../types';
 
 export interface ShopState {
-  collections?: ShoppingList[];
+  collections: ShoppingList[];
   isFetching?: boolean;
   errorMsg?: string;
 }
@@ -28,7 +28,7 @@ const initialState: ShopState = {
  * @param state
  * @param action
  */
-const shopReducer: Reducer<ShopState, ShopAction> = (state = initialState, action: ShopAction) => {
+const shopReducer: Reducer<ShopState, ShopAction> = (state = initialState, action):ShopState => {
   switch (action.type) {
     case ShopEnum.FETCH_COLLECTIONS_START:
       return { ...initialState, isFetching: true };

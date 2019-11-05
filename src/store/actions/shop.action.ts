@@ -1,4 +1,4 @@
-import { Action, AnyAction } from 'redux';
+import { AnyAction } from 'redux';
 import { ThunkDispatch, ThunkAction } from 'redux-thunk';
 import { ShoppingList, ShopEnum } from '../../types';
 import { getCollectionsAndDocuments, getDataFromCollections } from '../../firebase';
@@ -15,18 +15,18 @@ import { getCollectionsAndDocuments, getDataFromCollections } from '../../fireba
 //   };
 // };
 
-export interface FetchCollectionsStartAction extends Action {
+export interface FetchCollectionsStartAction extends AnyAction {
   type: ShopEnum;
 }
 
-export interface FetchCollectionsSuccessAction extends Action {
+export interface FetchCollectionsSuccessAction extends AnyAction {
   type: ShopEnum;
-  collections?: ShoppingList[];
+  collections: ShoppingList[];
 }
 
-export interface FetchCollectionsFailAction extends Action {
+export interface FetchCollectionsFailAction extends AnyAction {
   type: ShopEnum;
-  errorMsg?: string;
+  errorMsg: string;
 }
 
 const fetchCollectionsStart = (): ShopAction => {
@@ -71,6 +71,7 @@ export const fetchCollectionsAsync = (): ThunkAction<Promise<void>, {}, {}, AnyA
   }
 };
 
-export type ShopAction = FetchCollectionsStartAction &
-  FetchCollectionsSuccessAction &
-  FetchCollectionsFailAction;
+export type ShopAction =
+  | FetchCollectionsStartAction
+  | FetchCollectionsSuccessAction
+  | FetchCollectionsFailAction;

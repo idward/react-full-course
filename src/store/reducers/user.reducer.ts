@@ -10,7 +10,7 @@ const initialState: UserState = {
   currentUser: null,
 };
 
-const userReducer: Reducer<UserState, UserAction> = (state = initialState, action) => {
+const userReducer: Reducer<UserState, UserAction> = (state = initialState, action): UserState => {
   switch (action.type) {
     case UserEnum.SET_CURRENT_USER:
       return {

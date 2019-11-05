@@ -1,14 +1,14 @@
-import {Action} from 'redux'
+import { AnyAction } from 'redux';
 import { AuthUser, UserEnum } from '../../types';
 
-export interface SetCurrentUserAction extends Action {
-    type: UserEnum,
-    user: AuthUser
+export interface SetCurrentUserAction extends AnyAction {
+  type: UserEnum;
+  user: AuthUser;
 }
 
 /**
  * 增加用户
- * @param user 
+ * @param user
  */
 export const setCurrentUser = (user: AuthUser): SetCurrentUserAction => {
   return {
