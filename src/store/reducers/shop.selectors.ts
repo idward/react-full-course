@@ -17,3 +17,8 @@ export const selectCollection = (collectionName: string) => {
       collections.find((collection: ShoppingList) => collection.routeName === collectionName),
   );
 };
+
+export const selectIsFetching = createSelector(
+  [selectShop],
+  (shop: ShopState) => shop.isFetching,
+);

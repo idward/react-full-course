@@ -6,7 +6,8 @@ import {
   decreaseCartItemQuantity,
   removeCartItem,
 } from './cart.action';
-import { addCollections } from './shop.action';
+// import { addCollections } from './shop.action';
+import {fetchCollectionsAsync} from './shop.action'
 
 export {
   setCurrentUser,
@@ -15,5 +16,6 @@ export {
   increaseCartItemQuantity,
   decreaseCartItemQuantity,
   removeCartItem,
-  addCollections,
+  // addCollections,
+  fetchCollectionsAsync
 };

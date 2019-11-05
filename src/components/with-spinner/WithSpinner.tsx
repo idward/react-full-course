@@ -8,6 +8,7 @@ interface IComponentProps {
 
 /**
  * High Order Component(高阶组件)
+ * return new hanced component
  * @param WrappedComponent 
  */
 const WithSpinner = (WrappedComponent: ComponentType) => ({ isLoading, ...otherProps }: IComponentProps) => {
