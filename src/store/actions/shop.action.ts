@@ -55,8 +55,9 @@ const fetchCollectionsFail = (errorMsg: string): ShopAction => {
 export const fetchCollectionsAsync = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
 ): Promise<void> => {
+  debugger;
   // fetch collections start
-  await dispatch(fetchCollectionsStart());
+  dispatch(fetchCollectionsStart());
   const collectionRef = getCollectionsAndDocuments();
   try {
     // fetch collections success
@@ -67,7 +68,7 @@ export const fetchCollectionsAsync = (): ThunkAction<Promise<void>, {}, {}, AnyA
     dispatch(fetchCollectionsSuccess(collections));
   } catch (error) {
     // fetch collections failed
-    await dispatch(fetchCollectionsFail(error.message));
+    dispatch(fetchCollectionsFail(error.message));
   }
 };
 

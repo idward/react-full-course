@@ -4,7 +4,7 @@ import reduxThunk from 'redux-thunk';
 import { persistStore } from 'redux-persist';
 import reduder from './reducers';
 
-const middlewares = [logger, reduxThunk];
+const middlewares = [reduxThunk, logger];
 
 const store = createStore(reduder, applyMiddleware(...middlewares));
 
