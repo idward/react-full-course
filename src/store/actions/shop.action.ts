@@ -1,4 +1,5 @@
-import { Action, Dispatch } from 'redux';
+import { Action, AnyAction } from 'redux';
+import { ThunkDispatch, ThunkAction } from 'redux-thunk';
 import { ShoppingList, ShopEnum } from '../../types';
 import { getCollectionsAndDocuments, getDataFromCollections } from '../../firebase';
 
@@ -20,12 +21,12 @@ export interface FetchCollectionsStartAction extends Action {
 
 export interface FetchCollectionsSuccessAction extends Action {
   type: ShopEnum;
-  collections: ShoppingList[];
+  collections?: ShoppingList[];
 }
 
 export interface FetchCollectionsFailAction extends Action {
   type: ShopEnum;
-  errorMsg: string;
+  errorMsg?: string;
 }
 
 const fetchCollectionsStart = (): ShopAction => {
@@ -48,23 +49,28 @@ const fetchCollectionsFail = (errorMsg: string): ShopAction => {
   };
 };
 
-export const fetchCollectionsAsync = () => (dispatch: Dispatch<ShopAction>) => {
+/**
+ * redux thunk
+ */
+export const fetchCollectionsAsync = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>,
+): Promise<void> => {
   // fetch collections start
-  dispatch(fetchCollectionsStart());
+  await dispatch(fetchCollectionsStart());
   const collectionRef = getCollectionsAndDocuments();
-  collectionRef
-    .get()
-    .then((snapshot: any) => {
-      // fetch collections success
-      const collections = getDataFromCollections(snapshot);
-      console.log('collections: ', collections);
-      collections.sort((a: ShoppingList, b: ShoppingList) => a.title.localeCompare(b.title));
-      dispatch(fetchCollectionsSuccess(collections));
-    })
-    .catch((error: any) => {
-      // fetch collections failed
-      dispatch(fetchCollectionsFail(error.message));
-    });
+  try {
+    // fetch collections success
+    const snapshot = await collectionRef.get();
+    const collections = getDataFromCollections(snapshot);
+    console.log('collections: ', collections);
+    collections.sort((a: ShoppingList, b: ShoppingList) => a.title.localeCompare(b.title));
+    dispatch(fetchCollectionsSuccess(collections));
+  } catch (error) {
+    // fetch collections failed
+    await dispatch(fetchCollectionsFail(error.message));
+  }
 };
 
-export type ShopAction = FetchCollectionsStartAction | FetchCollectionsSuccessAction | FetchCollectionsFailAction;
+export type ShopAction = FetchCollectionsStartAction &
+  FetchCollectionsSuccessAction &
+  FetchCollectionsFailAction;

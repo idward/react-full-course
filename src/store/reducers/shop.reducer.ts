@@ -1,10 +1,10 @@
 import { Reducer } from 'redux';
-import { ShopAction, FetchCollectionsSuccessAction, FetchCollectionsFailAction } from '../actions/shop.action';
+import { ShopAction } from '../actions/shop.action';
 import { ShoppingList, ShopEnum } from '../../types';
 
 export interface ShopState {
-  collections: ShoppingList[];
-  isFetching: boolean;
+  collections?: ShoppingList[];
+  isFetching?: boolean;
   errorMsg?: string;
 }
 
@@ -28,14 +28,14 @@ const initialState: ShopState = {
  * @param state
  * @param action
  */
-const shopReducer: Reducer<ShopState, any> = (state = initialState, action: ShopAction) => {
+const shopReducer: Reducer<ShopState, ShopAction> = (state = initialState, action: ShopAction) => {
   switch (action.type) {
     case ShopEnum.FETCH_COLLECTIONS_START:
       return { ...initialState, isFetching: true };
     case ShopEnum.FETCH_COLLECTIONS_SUCCESS:
-      return { ...state, isFetching: false, collections: (action as FetchCollectionsSuccessAction).collections };
+      return { ...state, isFetching: false, collections: action.collections };
     case ShopEnum.FETCH_COLLECTIONS_FAILED:
-      return { ...state, isFetching: false, errorMsg: (action as FetchCollectionsFailAction).errorMsg };
+      return { ...state, isFetching: false, errorMsg: action.errorMsg };
     default:
       return state;
   }

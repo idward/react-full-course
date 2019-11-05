@@ -7,17 +7,17 @@ export interface ToggleCartStatusAction extends Action {
 
 export interface AddCartItemAction extends Action {
   type: CartEnum;
-  item: ShoppingItem;
+  item?: ShoppingItem;
 }
 
 export interface RemoveCartItemAction extends Action {
   type: CartEnum;
-  removedItem: ShoppingItem;
+  removedItem?: ShoppingItem;
 }
 
 export interface CartItemQuantityAction extends Action {
   type: CartEnum;
-  updatedItem: ShoppingItem;
+  updatedItem?: ShoppingItem;
 }
 
 export const toggleCartStatus = (): CartAction => {
@@ -54,4 +54,7 @@ export const removeCartItem = (removedItem: ShoppingItem): CartAction => {
   };
 };
 
-export type CartAction = CartItemQuantityAction | RemoveCartItemAction | ToggleCartStatusAction | AddCartItemAction;
+export type CartAction = CartItemQuantityAction &
+  RemoveCartItemAction &
+  ToggleCartStatusAction &
+  AddCartItemAction;
