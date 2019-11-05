@@ -55,7 +55,6 @@ const fetchCollectionsFail = (errorMsg: string): ShopAction => {
 export const fetchCollectionsAsync = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
 ): Promise<void> => {
-  debugger;
   // fetch collections start
   dispatch(fetchCollectionsStart());
   const collectionRef = getCollectionsAndDocuments();
