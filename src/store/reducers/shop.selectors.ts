@@ -22,3 +22,8 @@ export const selectIsFetching = createSelector(
   [selectShop],
   (shop: ShopState) => shop.isFetching,
 );
+
+export const isCollectionExist = createSelector(
+  [selectCollection as any],
+  (collection: ShoppingList) => !!collection,
+);

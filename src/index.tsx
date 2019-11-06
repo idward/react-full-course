@@ -16,3 +16,9 @@ render(
   </Provider>,
   document.getElementById('root'),
 );
+
+// declare const module: any;
+
+// if (module.hot) {
+//   module.hot.accept('./App', () => render(<App />, document.getElementById('root')));
+// }

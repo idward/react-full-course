@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // import { getCollectionsAndDocuments, getDataFromCollections } from '../../firebase/index';
 // import { ShoppingList } from '../../types';
 import { fetchCollectionsAsync } from '../../store/actions';
-import { selectCollections } from '../../store/reducers/shop.selectors';
+import { selectCollections, isCollectionExist } from '../../store/reducers/shop.selectors';
 import { ApplicationState } from '../../store/reducers';
 import WithSpinner from '../../components/with-spinner/WithSpinner';
 import CollectionsOverview from '../../components/collections-overview/CollectionsOverview';
@@ -15,6 +15,7 @@ import './shop.styles.scss';
 
 interface IShopPageProps {
   isFetchingCollections?: boolean;
+  isFetchingCollection?: boolean;
   addCollectionsToShop: () => void;
   [key: string]: any;
 }
@@ -26,7 +27,7 @@ const CollectionPageWithSpinner = WithSpinner(CollectionPage);
  * Child Route
  * Shop分为全部商品目录展示和具体目录商品列表展示
  */
-const ShopPage: FC<IShopPageProps> = ({ match, isFetchingCollections, addCollectionsToShop }) => {
+const ShopPage: FC<IShopPageProps> = ({ match, isFetchingCollections, isFetchingCollection, addCollectionsToShop }) => {
   // let collectionSubs: Unsubscribe | null = null;
   // const [isloading, setIsLoading] = useState(true);
 
@@ -72,7 +73,7 @@ const ShopPage: FC<IShopPageProps> = ({ match, isFetchingCollections, addCollect
         exact
         path={`${match.path}/:collectionName`}
         render={(props: any) => (
-          <CollectionPageWithSpinner isLoading={!isFetchingCollections} {...props} />
+          <CollectionPageWithSpinner isLoading={!isFetchingCollection} {...props} />
         )}
       />
     </div>
@@ -84,6 +85,7 @@ const mapStateToProps = (state: ApplicationState, ownProps: any) => {
   debugger;
   return {
     isFetchingCollections: !!selectCollections(state).length,
+    isFetchingCollection: isCollectionExist(state),
   };
 };
 

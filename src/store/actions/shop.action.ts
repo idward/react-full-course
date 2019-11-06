@@ -56,7 +56,7 @@ export const fetchCollectionsAsync = (): ThunkAction<Promise<void>, {}, {}, AnyA
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
 ): Promise<void> => {
   // fetch collections start
-  dispatch(fetchCollectionsStart());
+  await dispatch(fetchCollectionsStart());
   const collectionRef = getCollectionsAndDocuments();
   try {
     // fetch collections success
@@ -64,10 +64,10 @@ export const fetchCollectionsAsync = (): ThunkAction<Promise<void>, {}, {}, AnyA
     const collections = getDataFromCollections(snapshot);
     console.log('collections: ', collections);
     collections.sort((a: ShoppingList, b: ShoppingList) => a.title.localeCompare(b.title));
-    dispatch(fetchCollectionsSuccess(collections));
+    await dispatch(fetchCollectionsSuccess(collections));
   } catch (error) {
     // fetch collections failed
-    dispatch(fetchCollectionsFail(error.message));
+    await dispatch(fetchCollectionsFail(error.message));
   }
 };
 

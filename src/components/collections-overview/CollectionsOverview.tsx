@@ -11,8 +11,8 @@ interface ICollectionsOverviewProps {
   [key: string]: any;
 }
 
-const CollectionsOverview: FC<ICollectionsOverviewProps> = ({ collections, match }) => {
-  console.log('match: ', match);
+const CollectionsOverview: FC<ICollectionsOverviewProps> = ({ collections }) => {
+  console.log('CollectionsOverview component render');
   debugger;
   return (
     <div className="collections-overview">
