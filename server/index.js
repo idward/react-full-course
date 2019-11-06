@@ -12,7 +12,7 @@ const port = process.env.PORT || 4000;
 const compiler = webpack(webpackConfig);
 
 // static assets
-app.use(express.static(path.resolve(__dirname, '../dist')));
+app.use(express.static(path.resolve(__dirname, '../')));
 
 // webpackDevMiddleware
 app.use(

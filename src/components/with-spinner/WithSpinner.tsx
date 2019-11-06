@@ -12,6 +12,7 @@ interface IComponentProps {
  * @param WrappedComponent 
  */
 const WithSpinner = (WrappedComponent: ComponentType) => ({ isLoading, ...otherProps }: IComponentProps) => {
+  debugger;
   return isLoading ? (
     <SpinnerOverlay>
       <SpinnerContainer />

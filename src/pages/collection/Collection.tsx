@@ -12,15 +12,17 @@ interface ICategoryProps {
 }
 
 const CollectionPage: FC<ICategoryProps> = ({ collection }) => {
+  debugger;
+  if (!collection) {
+    return <h1>The collection you looking for is not exist</h1>;
+  }
   return (
     <div className="collection-page">
       <h2 className="title">{collection ? collection.title : ''}</h2>
       <div className="items">
-        {collection &&
-          collection.items.map((item: ShoppingItem, idx: number) => (
-            <CollectionItem key={`${item.name}-${idx}`} item={item} />
-          ))}
-        {!collection && 'The collection you looking for is not exist'}
+        {collection.items.map((item: ShoppingItem, idx: number) => (
+          <CollectionItem key={`${item.name}-${idx}`} item={item} />
+        ))}
       </div>
     </div>
   );

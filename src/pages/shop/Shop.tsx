@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // import { getCollectionsAndDocuments, getDataFromCollections } from '../../firebase/index';
 // import { ShoppingList } from '../../types';
 import { fetchCollectionsAsync } from '../../store/actions';
-import { selectIsFetching } from '../../store/reducers/shop.selectors';
+import { selectCollections } from '../../store/reducers/shop.selectors';
 import { ApplicationState } from '../../store/reducers';
 import WithSpinner from '../../components/with-spinner/WithSpinner';
 import CollectionsOverview from '../../components/collections-overview/CollectionsOverview';
@@ -65,23 +65,25 @@ const ShopPage: FC<IShopPageProps> = ({ match, isFetchingCollections, addCollect
         exact
         path={match.path}
         render={(props: any) => (
-          <CollectionsOverviewWithSpinner isLoading={isFetchingCollections} {...props} />
+          <CollectionsOverviewWithSpinner isLoading={!isFetchingCollections} {...props} />
         )}
       />
       <Route
         exact
         path={`${match.path}/:collectionName`}
         render={(props: any) => (
-          <CollectionPageWithSpinner isLoading={isFetchingCollections} {...props} />
+          <CollectionPageWithSpinner isLoading={!isFetchingCollections} {...props} />
         )}
       />
     </div>
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => {
+const mapStateToProps = (state: ApplicationState, ownProps: any) => {
+  console.log('ownProps: ', ownProps);
+  debugger;
   return {
-    isFetchingCollections: selectIsFetching(state),
+    isFetchingCollections: !!selectCollections(state).length,
   };
 };
 
