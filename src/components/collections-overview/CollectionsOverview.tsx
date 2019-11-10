@@ -13,7 +13,6 @@ interface ICollectionsOverviewProps {
 
 const CollectionsOverview: FC<ICollectionsOverviewProps> = ({ collections }) => {
   console.log('CollectionsOverview component render');
-  debugger;
   return (
     <div className="collections-overview">
       {collections.map(({ id, ...otherProps }: ShoppingList) => (

@@ -12,6 +12,7 @@ module.exports = {
   mode: 'development',
   devtool: 'source-map',
   entry: ['./src/index.tsx', 'webpack-hot-middleware/client?reload=true&noInfo=true'],
+  // entry: ['./src/index.tsx'],
   output: {
     filename: this.mode === 'production' ? '[name].[chunkhash].js' : '[name].[hash].js',
     chunkFilename: '[name].[chunkhash].js',

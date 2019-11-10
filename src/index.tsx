@@ -20,5 +20,5 @@ render(
 // declare const module: any;
 
 // if (module.hot) {
-//   module.hot.accept('./App', () => render(<App />, document.getElementById('root')));
+//   module.hot.accept();
 // }

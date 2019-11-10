@@ -18,12 +18,12 @@ export const selectCollection = (collectionName: string) => {
   );
 };
 
-export const selectIsFetching = createSelector(
-  [selectShop],
-  (shop: ShopState) => shop.isFetching,
+export const isCollectionsFetch = createSelector(
+  [selectCollections],
+  (collections: ShoppingList[]) => collections.length > 0,
 );
 
-export const isCollectionExist = createSelector(
+export const isCollectionFetch = createSelector(
   [selectCollection as any],
   (collection: ShoppingList) => !!collection,
 );

@@ -9,10 +9,10 @@ const app = express();
 
 const port = process.env.PORT || 4000;
 
-const compiler = webpack(webpackConfig);
-
 // static assets
 app.use(express.static(path.resolve(__dirname, '../')));
+
+const compiler = webpack(webpackConfig);
 
 // webpackDevMiddleware
 app.use(
@@ -25,7 +25,9 @@ app.use(
 );
 
 // webpackHotMiddleware
-app.use(webpackHotMiddleware(compiler));
+app.use(
+  webpackHotMiddleware(compiler),
+);
 
 app.get('**', (req, res) => {
   console.log('url', req.url);

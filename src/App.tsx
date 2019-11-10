@@ -3,11 +3,11 @@ import { Switch, Route, Redirect, withRouter, RouteComponentProps } from 'react-
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Unsubscribe } from 'firebase';
-import { auth, createUserProfileDocument } from './firebase';
+// import { auth, createUserProfileDocument } from './firebase';
 import { setCurrentUser as setCurrentUserAction } from './store/actions';
 import { ApplicationState } from './store/reducers';
 import { selectCurrentUser } from './store/reducers/user.selectors';
-import { AuthUser } from './types';
+// import { AuthUser } from './types';
 
 import HomePage from './pages/home/Home';
 import ShopPage from './pages/shop/Shop';
@@ -30,40 +30,40 @@ class App extends React.Component<IAppProps, {}> {
    * 获取用户权限(用户是否登录)
    */
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    // const { setCurrentUser } = this.props;
     // console.log(this.props);
-    this.userAuthSubs = auth.onAuthStateChanged(async (values: any) => {
-      // 用户存在
-      if (values) {
-        const userRef = await createUserProfileDocument(values);
-        if (userRef) {
-          this.userSnapshotSubs = userRef.onSnapshot(snapshot => {
-            const { displayName, email, createdAt } = snapshot.data() as AuthUser;
+    // this.userAuthSubs = auth.onAuthStateChanged(async (values: any) => {
+    //   // 用户存在
+    //   if (values) {
+    //     const userRef = await createUserProfileDocument(values);
+    //     if (userRef) {
+    //       this.userSnapshotSubs = userRef.onSnapshot(snapshot => {
+    //         const { displayName, email, createdAt } = snapshot.data() as AuthUser;
 
-            setCurrentUser({
-              uid: snapshot.id,
-              displayName,
-              email,
-              createdAt,
-            });
-          });
-        }
-      } else {
-        setCurrentUser(null);
-      }
-    });
+    //         setCurrentUser({
+    //           uid: snapshot.id,
+    //           displayName,
+    //           email,
+    //           createdAt,
+    //         });
+    //       });
+    //     }
+    //   } else {
+    //     setCurrentUser(null);
+    //   }
+    // });
   }
 
   /**
    * 清除监听资源, 防止内存中驻留，泄漏（组件销毁）
    */
   componentWillUnmount() {
-    if (this.userAuthSubs) {
-      this.userAuthSubs();
-    }
-    if (this.userSnapshotSubs) {
-      this.userSnapshotSubs();
-    }
+    // if (this.userAuthSubs) {
+    //   this.userAuthSubs();
+    // }
+    // if (this.userSnapshotSubs) {
+    //   this.userSnapshotSubs();
+    // }
   }
 
   render() {

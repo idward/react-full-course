@@ -1,4 +1,12 @@
-import { setCurrentUser } from './user.action';
+import {
+  setCurrentUser,
+  googleSignInStart,
+  googleSignInSuccess,
+  googleSignInFail,
+  emailSignInStart,
+  emailSignInSuccess,
+  emailSignInFail,
+} from './user.action';
 import {
   toggleCartStatus,
   addCartItem,
@@ -7,7 +15,12 @@ import {
   removeCartItem,
 } from './cart.action';
 // import { addCollections } from './shop.action';
-import {fetchCollectionsAsync} from './shop.action'
+import {
+  fetchCollectionsAsync,
+  fetchCollectionsStart,
+  fetchCollectionsSuccess,
+  fetchCollectionsFail,
+} from './shop.action';
 
 export {
   setCurrentUser,
@@ -17,5 +30,14 @@ export {
   decreaseCartItemQuantity,
   removeCartItem,
   // addCollections,
-  fetchCollectionsAsync
+  fetchCollectionsAsync,
+  fetchCollectionsStart,
+  fetchCollectionsSuccess,
+  fetchCollectionsFail,
+  googleSignInStart,
+  googleSignInSuccess,
+  googleSignInFail,
+  emailSignInStart,
+  emailSignInSuccess,
+  emailSignInFail,
 };

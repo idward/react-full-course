@@ -29,20 +29,20 @@ export interface FetchCollectionsFailAction extends AnyAction {
   errorMsg: string;
 }
 
-const fetchCollectionsStart = (): ShopAction => {
+export const fetchCollectionsStart = (): ShopAction => {
   return {
     type: ShopEnum.FETCH_COLLECTIONS_START,
   };
 };
 
-const fetchCollectionsSuccess = (collections: ShoppingList[]): ShopAction => {
+export const fetchCollectionsSuccess = (collections: ShoppingList[]): ShopAction => {
   return {
     type: ShopEnum.FETCH_COLLECTIONS_SUCCESS,
     collections,
   };
 };
 
-const fetchCollectionsFail = (errorMsg: string): ShopAction => {
+export const fetchCollectionsFail = (errorMsg: string): ShopAction => {
   return {
     type: ShopEnum.FETCH_COLLECTIONS_FAILED,
     errorMsg,

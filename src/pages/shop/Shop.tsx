@@ -5,12 +5,9 @@ import { connect } from 'react-redux';
 // import { Unsubscribe } from 'firebase';
 // import { getCollectionsAndDocuments, getDataFromCollections } from '../../firebase/index';
 // import { ShoppingList } from '../../types';
-import { fetchCollectionsAsync } from '../../store/actions';
-import { selectCollections, isCollectionExist } from '../../store/reducers/shop.selectors';
-import { ApplicationState } from '../../store/reducers';
-import WithSpinner from '../../components/with-spinner/WithSpinner';
-import CollectionsOverview from '../../components/collections-overview/CollectionsOverview';
-import CollectionPage from '../collection/Collection';
+import { fetchCollectionsStart } from '../../store/actions';
+import CollectionsOverviewContainer from '../../components/collections-overview/CollectionsOverviewContainer';
+import CollectionContainer from '../collection/CollectionContainer';
 import './shop.styles.scss';
 
 interface IShopPageProps {
@@ -20,14 +17,11 @@ interface IShopPageProps {
   [key: string]: any;
 }
 
-const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
-const CollectionPageWithSpinner = WithSpinner(CollectionPage);
-
 /**
  * Child Route
  * Shop分为全部商品目录展示和具体目录商品列表展示
  */
-const ShopPage: FC<IShopPageProps> = ({ match, isFetchingCollections, isFetchingCollection, addCollectionsToShop }) => {
+const ShopPage: FC<IShopPageProps> = ({ match, addCollectionsToShop }) => {
   // let collectionSubs: Unsubscribe | null = null;
   // const [isloading, setIsLoading] = useState(true);
 
@@ -62,41 +56,21 @@ const ShopPage: FC<IShopPageProps> = ({ match, isFetchingCollections, isFetching
 
   return (
     <div className="shop-page">
-      <Route
-        exact
-        path={match.path}
-        render={(props: any) => (
-          <CollectionsOverviewWithSpinner isLoading={!isFetchingCollections} {...props} />
-        )}
-      />
-      <Route
-        exact
-        path={`${match.path}/:collectionName`}
-        render={(props: any) => (
-          <CollectionPageWithSpinner isLoading={!isFetchingCollection} {...props} />
-        )}
-      />
+      <Route exact path={match.path} component={CollectionsOverviewContainer} />
+      <Route exact path={`${match.path}/:collectionName`} component={CollectionContainer} />
     </div>
   );
-};
-
-const mapStateToProps = (state: ApplicationState, ownProps: any) => {
-  console.log('ownProps: ', ownProps);
-  debugger;
-  return {
-    isFetchingCollections: !!selectCollections(state).length,
-    isFetchingCollection: isCollectionExist(state),
-  };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     // addCollectionsToShop: (collections: ShoppingList[]) => dispatch(addCollections(collections)),
-    addCollectionsToShop: () => dispatch(fetchCollectionsAsync() as any),
+    // addCollectionsToShop: () => dispatch(fetchCollectionsStart() as any),
+    addCollectionsToShop: () => dispatch(fetchCollectionsStart()),
   };
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(ShopPage);

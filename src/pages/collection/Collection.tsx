@@ -13,7 +13,6 @@ interface ICategoryProps {
 
 const CollectionPage: FC<ICategoryProps> = ({ collection }) => {
   console.log('CollectionPage component render');
-  debugger;
   if (!collection) {
     return <h1>The collection you looking for is not exist</h1>;
   }
