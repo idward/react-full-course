@@ -16,20 +16,24 @@ const userReducer: Reducer<UserState, UserAction> = (state = initialState, actio
   switch (action.type) {
     case UserEnum.GOOGLE_SIGN_IN_START:
     case UserEnum.EMAIL_SIGN_IN_START:
+    case UserEnum.SIGN_OUT_SUCCESS:
       return {
         ...initialState,
       };
-    case UserEnum.GOOGLE_SIGN_IN_SUCCESS:
-    case UserEnum.EMAIL_SIGN_IN_SUCCESS:
+    case UserEnum.SIGN_IN_SUCCESS:
       return {
         ...state,
         currentUser: action.user,
       };
-    case UserEnum.GOOGLE_SIGN_IN_FAIL:
-    case UserEnum.EMAIL_SIGN_IN_FAIL:
+    case UserEnum.SIGN_IN_FAIL:
       return {
         ...state,
         currentUser: null,
+        error: action.error,
+      };
+    case UserEnum.SIGN_OUT_FAIL:
+      return {
+        ...state,
         error: action.error,
       };
     default:

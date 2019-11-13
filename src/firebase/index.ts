@@ -43,17 +43,17 @@ export const getCollectionsAndDocuments = () => {
   return fs.collection('collections');
 };
 
-export const getDataFromCollections = (snapshot:any) => {
-    return snapshot.docs.map((doc: any) => {
-      const { title, routeName, items } = doc.data();
-      return {
-        id: doc.id,
-        title,
-        routeName: encodeURI(routeName),
-        items,
-      };
-    });
-}
+export const getDataFromCollections = (snapshot: any) => {
+  return snapshot.docs.map((doc: any) => {
+    const { title, routeName, items } = doc.data();
+    return {
+      id: doc.id,
+      title,
+      routeName: encodeURI(routeName),
+      items,
+    };
+  });
+};
 
 export const addCollectionsAndDocuments = async (collectionName: string, datas: any) => {
   const collectionRef = fs.collection(collectionName);
@@ -66,6 +66,15 @@ export const addCollectionsAndDocuments = async (collectionName: string, datas: 
   const result = await batch.commit();
 
   return result;
+};
+
+export const getAuthUser = ():Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged(authUser => {
+      unsubscribe();
+      resolve(authUser);
+    }, reject);
+  });
 };
 
 export const auth = firebase.auth();

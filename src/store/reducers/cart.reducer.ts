@@ -56,6 +56,10 @@ const cartReducer: Reducer<CartState, CartAction> = (state = initialState, actio
           return cartItem;
         }),
       };
+    case CartEnum.CLEAR_CART:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }

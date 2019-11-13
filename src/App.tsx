@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Unsubscribe } from 'firebase';
 // import { auth, createUserProfileDocument } from './firebase';
-import { setCurrentUser as setCurrentUserAction } from './store/actions';
+import { checkUserSession } from './store/actions';
 import { ApplicationState } from './store/reducers';
 import { selectCurrentUser } from './store/reducers/user.selectors';
 // import { AuthUser } from './types';
@@ -17,6 +17,7 @@ import Header from './components/header/Header';
 import './app.styles.scss';
 
 interface AppComponentProps {
+  checkUserSession(): void;
   [key: string]: any;
 }
 
@@ -30,28 +31,7 @@ class App extends React.Component<IAppProps, {}> {
    * 获取用户权限(用户是否登录)
    */
   componentDidMount() {
-    // const { setCurrentUser } = this.props;
-    // console.log(this.props);
-    // this.userAuthSubs = auth.onAuthStateChanged(async (values: any) => {
-    //   // 用户存在
-    //   if (values) {
-    //     const userRef = await createUserProfileDocument(values);
-    //     if (userRef) {
-    //       this.userSnapshotSubs = userRef.onSnapshot(snapshot => {
-    //         const { displayName, email, createdAt } = snapshot.data() as AuthUser;
-
-    //         setCurrentUser({
-    //           uid: snapshot.id,
-    //           displayName,
-    //           email,
-    //           createdAt,
-    //         });
-    //       });
-    //     }
-    //   } else {
-    //     setCurrentUser(null);
-    //   }
-    // });
+    this.props.checkUserSession();
   }
 
   /**
@@ -98,7 +78,7 @@ const mapStateToProps = (state: ApplicationState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    setCurrentUser: (user: any) => dispatch(setCurrentUserAction(user)),
+    checkUserSession: () => dispatch(checkUserSession()),
   };
 };
 

@@ -1,8 +1,11 @@
 import React, { Component, SyntheticEvent, FormEvent } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { signupStart } from '../../store/actions';
 // import { RouteComponentProps } from 'react-router-dom';
 import FormInput from '../form-input/FormInput';
 import CustomButton from '../custom-button/CustomButton';
-import { auth, createUserProfileDocument } from '../../firebase';
+// import { auth, createUserProfileDocument } from '../../firebase';
 import './signup.styles.scss';
 
 interface SignUpState {
@@ -14,6 +17,7 @@ interface SignUpState {
 }
 
 interface ISignUpProps {
+  signup(email: string, password: string, displayName: string): void;
   [key: string]: any;
 }
 
@@ -34,13 +38,10 @@ class SignUp extends Component<ISignUpProps, SignUpState> {
       return;
     }
 
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(email, password);
-      await createUserProfileDocument(user, { displayName });
-      this.setState({ displayName: '', email: '', password: '', confirmPassword: '' });
-    } catch (error) {
-      console.log('error: ', error.message);
-    }
+    await this.props.signup(email, password, displayName);
+    // const { user } = await auth.createUserWithEmailAndPassword(email, password);
+    // await createUserProfileDocument(user, { displayName });
+    this.setState({ displayName: '', email: '', password: '', confirmPassword: '' });
   };
 
   handleChange = (event: SyntheticEvent<HTMLInputElement>) => {
@@ -102,4 +103,14 @@ class SignUp extends Component<ISignUpProps, SignUpState> {
   }
 }
 
-export default SignUp;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    signup: (email: string, password: string, displayName: string) =>
+      dispatch(signupStart(email, password, displayName)),
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(SignUp);

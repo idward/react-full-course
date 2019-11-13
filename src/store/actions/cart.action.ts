@@ -1,23 +1,8 @@
 import { AnyAction } from 'redux';
 import { CartEnum, ShoppingItem } from '../../types';
 
-export interface ToggleCartStatusAction extends AnyAction {
+export interface CartAction extends AnyAction {
   type: CartEnum;
-}
-
-export interface AddCartItemAction extends AnyAction {
-  type: CartEnum;
-  item?: ShoppingItem;
-}
-
-export interface RemoveCartItemAction extends AnyAction {
-  type: CartEnum;
-  removedItem?: ShoppingItem;
-}
-
-export interface CartItemQuantityAction extends AnyAction {
-  type: CartEnum;
-  updatedItem?: ShoppingItem;
 }
 
 export const toggleCartStatus = (): CartAction => {
@@ -54,7 +39,8 @@ export const removeCartItem = (removedItem: ShoppingItem): CartAction => {
   };
 };
 
-export type CartAction = CartItemQuantityAction |
-  RemoveCartItemAction |
-  ToggleCartStatusAction |
-  AddCartItemAction;
+export const clearCart = () => {
+  return {
+    type: CartEnum.CLEAR_CART,
+  };
+};

@@ -1,9 +1,9 @@
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeEvery, put, call, all } from 'redux-saga/effects';
 import { getCollectionsAndDocuments, getDataFromCollections } from '../../firebase';
 import { fetchCollectionsSuccess, fetchCollectionsFail } from './index';
 import { ShopEnum, ShoppingList } from '../../types';
 
-const fetchCollectionsAsyn = function* fetchCollectionsAsyn() {
+function* fetchCollectionsAsyn() {
   yield console.log('I am fired');
   const collectionRef = getCollectionsAndDocuments();
   try {
@@ -17,12 +17,16 @@ const fetchCollectionsAsyn = function* fetchCollectionsAsyn() {
     // fetch collections failed
     yield put(fetchCollectionsFail(error.message));
   }
-};
+}
 
 /**
  * Generator function
  * Effect(Side Effect)
  */
-export const fetchCollectionsStart = function* fetchCollectionsStart() {
+export function* fetchCollectionsStart() {
   yield takeEvery(ShopEnum.FETCH_COLLECTIONS_START, fetchCollectionsAsyn);
-};
+}
+
+export function* shopSagas() {
+  yield all([call(fetchCollectionsStart)]);
+}

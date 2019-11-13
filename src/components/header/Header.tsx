@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import styled, { css } from 'styled-components';
 // import { createStructuredSelector } from 'reselect';
 import { selectCartStatus } from '../../store/reducers/cart.selectors';
 import { selectCurrentUser } from '../../store/reducers/user.selectors';
-import { auth } from '../../firebase';
+// import { auth } from '../../firebase';
+import { signOutStart } from '../../store/actions';
 import { ApplicationState } from '../../store/reducers';
 import { AuthUser } from '../../types';
 
@@ -17,6 +19,7 @@ import CartDropdown from '../cart-dropdown/CartDropdown';
 interface IHeaderProps {
   currentUser: AuthUser | null;
   showStatus: boolean;
+  signOut(): void;
 }
 /**
  * 样式组件开始
@@ -60,7 +63,7 @@ const SignOutContainer = styled.div`
  * 样式组件结束
  */
 
-const Header: FC<Partial<IHeaderProps>> = ({ currentUser, showStatus }) => {
+const Header: FC<Partial<IHeaderProps>> = ({ currentUser, showStatus, signOut }) => {
   return (
     <HeaderContainer>
       <LogoContainer to="/">
@@ -70,7 +73,7 @@ const Header: FC<Partial<IHeaderProps>> = ({ currentUser, showStatus }) => {
         <LinkContainer to="/shop">SHOP</LinkContainer>
         <LinkContainer to="contact">CONTACT</LinkContainer>
         {currentUser ? (
-          <SignOutContainer onClick={() => auth.signOut()}>Sign Out</SignOutContainer>
+          <SignOutContainer onClick={signOut}>Sign Out</SignOutContainer>
         ) : (
           <LinkContainer to="/register">Register</LinkContainer>
         )}
@@ -92,4 +95,13 @@ const mapStateToProp = (state: ApplicationState) => {
   };
 };
 
-export default connect(mapStateToProp)(Header);
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    signOut: () => dispatch(signOutStart()),
+  };
+};
+
+export default connect(
+  mapStateToProp,
+  mapDispatchToProps,
+)(Header);
