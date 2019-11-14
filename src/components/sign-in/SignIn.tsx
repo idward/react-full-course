@@ -1,4 +1,4 @@
-import React, { Component, SyntheticEvent, FormEvent } from 'react';
+import React, { FC, useState, SyntheticEvent, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 // import { RouteComponentProps } from 'react-router-dom';
@@ -20,15 +20,15 @@ interface ISignInProps {
   [key: string]: any;
 }
 
-class SignIn extends Component<ISignInProps, SignInState> {
-  state = {
-    email: '',
-    password: '',
-  };
+/**
+ * React Hooks
+ */
+const SignIn: FC<ISignInProps> = ({ signInWithGoogle, signInWithEmail }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    const { email, password } = this.state;
     if (!email.trim().length) {
       alert('Email不能为空');
       return;
@@ -37,59 +37,125 @@ class SignIn extends Component<ISignInProps, SignInState> {
       alert('Password不能为空');
       return;
     }
-    this.props.signInWithEmail(email, password);
-    // try {
-    //   await auth.signInWithEmailAndPassword(email, password);
-    //   this.setState({ email: '', password: '' });
-    // } catch (error) {
-    //   console.log('error: ', error.message);
-    // }
+    signInWithEmail(email, password);
   };
 
-  handleChange = (event: SyntheticEvent<HTMLInputElement>) => {
+  const handleChange = (event: SyntheticEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
+    if (name === 'email') {
+      setEmail(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
   };
 
-  render() {
-    const { email, password } = this.state;
-    const { signInWithGoogle } = this.props;
-    // console.log('signIn:', this.props);
+  return (
+    <div className="sign-in">
+      <h2>I already have an account</h2>
+      <span>Sign in with your email and password</span>
 
-    return (
-      <div className="sign-in">
-        <h2>I already have an account</h2>
-        <span>Sign in with your email and password</span>
+      <form onSubmit={handleSubmit}>
+        <FormInput
+          name="email"
+          type="email"
+          value={email}
+          label="Email"
+          handleChange={handleChange}
+          required
+        />
+        <FormInput
+          name="password"
+          type="password"
+          label="Password"
+          value={password}
+          handleChange={handleChange}
+          required
+        />
 
-        <form onSubmit={this.handleSubmit}>
-          <FormInput
-            name="email"
-            type="email"
-            value={email}
-            label="Email"
-            handleChange={this.handleChange}
-            required
-          />
-          <FormInput
-            name="password"
-            type="password"
-            label="Password"
-            value={password}
-            handleChange={this.handleChange}
-            required
-          />
+        <div className="buttons">
+          <CustomButton type="submit">Submit Form</CustomButton>
+          <CustomButton type="button" onClick={signInWithGoogle} isGoogleSignIn>
+            SIGN IN WITH GOOGLE
+          </CustomButton>
+        </div>
+      </form>
+    </div>
+  );
+};
 
-          <div className="buttons">
-            <CustomButton type="submit">Submit Form</CustomButton>
-            <CustomButton type="button" onClick={signInWithGoogle} isGoogleSignIn>
-              SIGN IN WITH GOOGLE
-            </CustomButton>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+/**
+ * React Class component
+ */
+// class SignIn extends React.Component<ISignInProps, SignInState> {
+//   state = {
+//     email: '',
+//     password: '',
+//   };
+
+//   handleSubmit = async (event: FormEvent) => {
+//     event.preventDefault();
+//     const { email, password } = this.state;
+//     if (!email.trim().length) {
+//       alert('Email不能为空');
+//       return;
+//     }
+//     if (!password.trim().length) {
+//       alert('Password不能为空');
+//       return;
+//     }
+//     this.props.signInWithEmail(email, password);
+//     // try {
+//     //   await auth.signInWithEmailAndPassword(email, password);
+//     //   this.setState({ email: '', password: '' });
+//     // } catch (error) {
+//     //   console.log('error: ', error.message);
+//     // }
+//   };
+
+//   handleChange = (event: SyntheticEvent<HTMLInputElement>) => {
+//     const { name, value } = event.currentTarget;
+//     this.setState({ [name]: value });
+//   };
+
+//   render() {
+//     const { email, password } = this.state;
+//     const { signInWithGoogle } = this.props;
+//     // console.log('signIn:', this.props);
+
+//     return (
+//       <div className="sign-in">
+//         <h2>I already have an account</h2>
+//         <span>Sign in with your email and password</span>
+
+//         <form onSubmit={this.handleSubmit}>
+//           <FormInput
+//             name="email"
+//             type="email"
+//             value={email}
+//             label="Email"
+//             handleChange={this.handleChange}
+//             required
+//           />
+//           <FormInput
+//             name="password"
+//             type="password"
+//             label="Password"
+//             value={password}
+//             handleChange={this.handleChange}
+//             required
+//           />
+
+//           <div className="buttons">
+//             <CustomButton type="submit">Submit Form</CustomButton>
+//             <CustomButton type="button" onClick={signInWithGoogle} isGoogleSignIn>
+//               SIGN IN WITH GOOGLE
+//             </CustomButton>
+//           </div>
+//         </form>
+//       </div>
+//     );
+//   }
+// }
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { FC, useEffect } from 'react';
 import { Switch, Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Unsubscribe } from 'firebase';
+// import { Unsubscribe } from 'firebase';
 // import { auth, createUserProfileDocument } from './firebase';
 import { checkUserSession } from './store/actions';
 import { ApplicationState } from './store/reducers';
 import { selectCurrentUser } from './store/reducers/user.selectors';
-// import { AuthUser } from './types';
+import { AuthUser } from './types';
 
 import HomePage from './pages/home/Home';
 import ShopPage from './pages/shop/Shop';
@@ -17,54 +17,79 @@ import Header from './components/header/Header';
 import './app.styles.scss';
 
 interface AppComponentProps {
+  currentUser: AuthUser;
   checkUserSession(): void;
   [key: string]: any;
 }
 
 type IAppProps = AppComponentProps & RouteComponentProps;
 
-class App extends React.Component<IAppProps, {}> {
-  userAuthSubs: Unsubscribe | null = null;
-  userSnapshotSubs: Unsubscribe | null = null;
+const App: FC<IAppProps> = ({ currentUser, checkUserSession: autoLogin }) => {
+  useEffect(() => {
+    autoLogin();
+    // eslint-disable-next-line
+  }, []);
 
-  /**
-   * 获取用户权限(用户是否登录)
-   */
-  componentDidMount() {
-    this.props.checkUserSession();
-  }
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route path="/shop" component={ShopPage} />
+        <Route exact path="/checkout" component={CheckoutPage} />
+        {/** 路由认证问题 放在路由解析中会是更好的解决方案 */}
+        <Route
+          exact
+          path="/register"
+          render={() => (currentUser ? <Redirect to="/" /> : <RegisterPage />)}
+        />
+        <Route exact path="/" component={HomePage} />
+      </Switch>
+    </div>
+  );
+};
 
-  /**
-   * 清除监听资源, 防止内存中驻留，泄漏（组件销毁）
-   */
-  componentWillUnmount() {
-    // if (this.userAuthSubs) {
-    //   this.userAuthSubs();
-    // }
-    // if (this.userSnapshotSubs) {
-    //   this.userSnapshotSubs();
-    // }
-  }
+// class App extends React.Component<IAppProps, {}> {
+//   // userAuthSubs: Unsubscribe | null = null;
+//   // userSnapshotSubs: Unsubscribe | null = null;
 
-  render() {
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={CheckoutPage} />
-          {/** 路由认证问题 放在路由解析中会是更好的解决方案 */}
-          <Route
-            exact
-            path="/register"
-            render={() => (this.props.currentUser ? <Redirect to="/" /> : <RegisterPage />)}
-          />
-          <Route exact path="/" component={HomePage} />
-        </Switch>
-      </div>
-    );
-  }
-}
+//   /**
+//    * 获取用户权限(用户是否登录)
+//    */
+//   componentDidMount() {
+//     this.props.checkUserSession();
+//   }
+
+//   /**
+//    * 清除监听资源, 防止内存中驻留，泄漏（组件销毁）
+//    */
+//   componentWillUnmount() {
+//     // if (this.userAuthSubs) {
+//     //   this.userAuthSubs();
+//     // }
+//     // if (this.userSnapshotSubs) {
+//     //   this.userSnapshotSubs();
+//     // }
+//   }
+
+//   render() {
+//     return (
+//       <div>
+//         <Header />
+//         <Switch>
+//           <Route path="/shop" component={ShopPage} />
+//           <Route exact path="/checkout" component={CheckoutPage} />
+//           {/** 路由认证问题 放在路由解析中会是更好的解决方案 */}
+//           <Route
+//             exact
+//             path="/register"
+//             render={() => (this.props.currentUser ? <Redirect to="/" /> : <RegisterPage />)}
+//           />
+//           <Route exact path="/" component={HomePage} />
+//         </Switch>
+//       </div>
+//     );
+//   }
+// }
 
 /**
  * memorize to improve preformance

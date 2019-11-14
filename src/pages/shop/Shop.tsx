@@ -41,16 +41,17 @@ const ShopPage: FC<IShopPageProps> = ({ match, addCollectionsToShop }) => {
 
   // 加载数据
   useEffect(() => {
+    console.log('ShopPage render');
     // console.log('colletionSubs:', collectionSubs);
     // loadCollectionData();
     addCollectionsToShop();
 
-    // return () => {
-    //   // console.log('shop component unmount');
-    //   if (collectionSubs) {
-    //     collectionSubs();
-    //   }
-    // };
+    return () => {
+      console.log('shop component unmount');
+      // if (collectionSubs) {
+      //   collectionSubs();
+      // }
+    };
     // eslint-disable-next-line
   }, []);
 
