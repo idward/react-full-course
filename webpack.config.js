@@ -9,7 +9,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  mode: 'development',
+  mode: devMode ? 'development' : 'production',
   devtool: 'source-map',
   entry: ['./src/index.tsx', 'webpack-hot-middleware/client?reload=true&noInfo=true'],
   // entry: ['./src/index.tsx'],
@@ -43,8 +43,12 @@ module.exports = {
         test: /\.(scss|css)$/,
         // include: path.resolve(__dirname, 'src'),
         use: [
-          // { loader: 'style-loader' },
-          { loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader },
+          {
+            loader: 'css-hot-loader'
+          },
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
           // {
           //   loader: 'css-modules-typescript-loader',
           // },
@@ -102,7 +106,8 @@ module.exports = {
     }),
     new ForkTsCheckerWebpackPlugin({ eslint: true }),
     new MiniCssExtractPlugin({
-      filename: 'style.[contenthash].css',
+      filename: devMode ? '[name].css' : '[name].[chunkhash].css',
+      chuckFilename: devMode ? '[id].css' : '[id].[chunkhash].css',
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
