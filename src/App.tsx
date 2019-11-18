@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, lazy, Suspense } from 'react';
 import { Switch, Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -9,12 +9,15 @@ import { ApplicationState } from './store/reducers';
 import { selectCurrentUser } from './store/reducers/user.selectors';
 import { AuthUser } from './types';
 
-import HomePage from './pages/home/Home';
-import ShopPage from './pages/shop/Shop';
+// import HomePage from './pages/home/Home';
+// import ShopPage from './pages/shop/Shop';
 import RegisterPage from './pages/register/Register';
 import CheckoutPage from './pages/checkout/Checkout';
 import Header from './components/header/Header';
 import './app.styles.scss';
+
+const HomePage = lazy(() => import('./pages/home/Home'));
+const ShopPage = lazy(() => import('./pages/shop/Shop'));
 
 interface AppComponentProps {
   currentUser: AuthUser;
@@ -34,7 +37,6 @@ const App: FC<IAppProps> = ({ currentUser, checkUserSession: autoLogin }) => {
     <div>
       <Header />
       <Switch>
-        <Route path="/shop" component={ShopPage} />
         <Route exact path="/checkout" component={CheckoutPage} />
         {/** 路由认证问题 放在路由解析中会是更好的解决方案 */}
         <Route
@@ -42,7 +44,10 @@ const App: FC<IAppProps> = ({ currentUser, checkUserSession: autoLogin }) => {
           path="/register"
           render={() => (currentUser ? <Redirect to="/" /> : <RegisterPage />)}
         />
-        <Route exact path="/" component={HomePage} />
+        <Suspense fallback="<div>loading...</div>">
+          <Route path="/shop" component={ShopPage} />
+          <Route exact path="/" component={HomePage} />
+        </Suspense>
       </Switch>
     </div>
   );
