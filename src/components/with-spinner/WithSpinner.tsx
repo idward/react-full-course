@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react';
-import { SpinnerContainer, SpinnerOverlay } from './with-spinner.styles';
+import Spinner from '../spinner/Spinner';
 
 interface IComponentProps {
   isLoading: boolean;
@@ -9,16 +9,13 @@ interface IComponentProps {
 /**
  * High Order Component(高阶组件)
  * return new hanced component
- * @param WrappedComponent 
+ * @param WrappedComponent
  */
-const WithSpinner = (WrappedComponent: ComponentType) => ({ isLoading, ...otherProps }: IComponentProps) => {
-  return isLoading ? (
-    <SpinnerOverlay>
-      <SpinnerContainer />
-    </SpinnerOverlay>
-  ) : (
-    <WrappedComponent {...otherProps} />
-  );
+const WithSpinner = (WrappedComponent: ComponentType) => ({
+  isLoading,
+  ...otherProps
+}: IComponentProps) => {
+  return isLoading ? <Spinner /> : <WrappedComponent {...otherProps} />;
 };
 
 export default WithSpinner;

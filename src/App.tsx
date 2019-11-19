@@ -11,13 +11,17 @@ import { AuthUser } from './types';
 
 // import HomePage from './pages/home/Home';
 // import ShopPage from './pages/shop/Shop';
-import RegisterPage from './pages/register/Register';
-import CheckoutPage from './pages/checkout/Checkout';
+// import RegisterPage from './pages/register/Register';
+// import CheckoutPage from './pages/checkout/Checkout';
 import Header from './components/header/Header';
+import Spinner from './components/spinner/Spinner';
+import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 import './app.styles.scss';
 
 const HomePage = lazy(() => import('./pages/home/Home'));
 const ShopPage = lazy(() => import('./pages/shop/Shop'));
+const CheckoutPage = lazy(() => import('./pages/checkout/Checkout'));
+const RegisterPage = lazy(() => import('./pages/register/Register'));
 
 interface AppComponentProps {
   currentUser: AuthUser;
@@ -37,17 +41,19 @@ const App: FC<IAppProps> = ({ currentUser, checkUserSession: autoLogin }) => {
     <div>
       <Header />
       <Switch>
-        <Route exact path="/checkout" component={CheckoutPage} />
-        {/** 路由认证问题 放在路由解析中会是更好的解决方案 */}
-        <Route
-          exact
-          path="/register"
-          render={() => (currentUser ? <Redirect to="/" /> : <RegisterPage />)}
-        />
-        <Suspense fallback="<div>loading...</div>">
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/" component={HomePage} />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<Spinner />}>
+            {/** 路由认证问题 放在路由解析中会是更好的解决方案 */}
+            <Route
+              exact
+              path="/register"
+              render={() => (currentUser ? <Redirect to="/" /> : <RegisterPage />)}
+            />
+            <Route exact path="/checkout" component={CheckoutPage} />
+            <Route path="/shop" component={ShopPage} />
+            <Route exact path="/" component={HomePage} />
+          </Suspense>
+        </ErrorBoundary>
       </Switch>
     </div>
   );

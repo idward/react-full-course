@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import './spinner.styles';
+import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.styles';
 
 interface ISpinnerProps {
   [key: string]: any;
@@ -7,9 +7,9 @@ interface ISpinnerProps {
 
 const Spinner: FC<ISpinnerProps> = () => {
   return (
-    <div className="spinner-overlay">
-      <div className="spinner-container"></div>
-    </div>
+    <SpinnerOverlay>
+      <SpinnerContainer />
+    </SpinnerOverlay>
   );
 };
 

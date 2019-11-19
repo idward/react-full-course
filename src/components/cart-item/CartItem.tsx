@@ -6,6 +6,7 @@ interface ICartItemProps {
 }
 
 const CartItem: FC<ICartItemProps> = ({ item: { imageUrl, price, name, quantity } }) => {
+  console.log('CartItem render');
   return (
     <div className="cart-item">
       <img src={imageUrl} alt="" />
@@ -19,4 +20,4 @@ const CartItem: FC<ICartItemProps> = ({ item: { imageUrl, price, name, quantity 
   );
 };
 
-export default CartItem;
+export default React.memo(CartItem);

@@ -55,6 +55,8 @@ const ShopPage: FC<IShopPageProps> = ({ match, addCollectionsToShop }) => {
     // eslint-disable-next-line
   }, []);
 
+  // throw Error();
+
   return (
     <div className="shop-page">
       <Route exact path={match.path} component={CollectionsOverviewContainer} />
