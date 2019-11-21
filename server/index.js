@@ -2,6 +2,7 @@ const express = require('express');
 const webpack = require('webpack');
 const bodyParser = require('body-parser');
 const path = require('path');
+const compression = require('compression');
 const webpackConfig = require('../webpack.config');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -20,6 +21,9 @@ const port = process.env.PORT || 4000;
 // bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// compress(gzip)
+app.use(compression());
 
 // static assets
 app.use(express.static(path.resolve(__dirname, '../dist')));
